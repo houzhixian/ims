@@ -13,6 +13,19 @@ export default axios.create({
     responseType: "json"
 });
 
+
+axios.interceptors.request.use(config => {
+    config.setHeaders([
+        {
+            "token" : ""
+        }
+    ])
+    return config
+})
+
+axios.interceptors.response.use
+
+
 export function get(url){
     let config = {
         headers: {
@@ -28,6 +41,16 @@ export function get(url){
                 reject(err)
             })
     })
+}
+
+export function getWithParam(url, param) {
+    url += "?";
+    if (param instanceof Map) {
+        for (let [key, value] of param) {
+            url += key + "=" + value + "&"
+        }
+    }
+    get(url.substr(0, url.length - 1))
 }
 
 
