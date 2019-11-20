@@ -1,0 +1,145 @@
+import {baseURL} from '../config/config'
+
+// 封装ajax请求
+
+import axios from "axios";
+
+axios.defaults.timeout = 10000 //超时取消请求
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+axios.defaults.baseURL = baseURL
+
+export default axios.create({
+    baseURL: baseURL,
+    responseType: "json"
+});
+
+export function get(url){
+    let config = {
+        headers: {
+            'Content-Type' : 'application/json'
+        }
+    }
+    return new Promise((resolve, reject) => {
+        axios.get(url, config)
+            .then(res => {
+                resolve(res.data)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+
+
+export function post(url, params) {
+    let config = {
+        headers: {
+            "Content-Type" : "application/json"
+        }
+    }
+    return new Promise((resolve, reject) => {
+        axios.post(url, params, config)
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err =>{
+                console.error(err)
+                reject(err)
+            })
+    });
+}
+
+export function del(url, params) {
+    let config = {
+        headers: {
+            "Content-Type" : "application/json"
+        }
+    }
+    return new Promise((resolve, reject) => {
+        axios.delete(url, params, config)
+            .then(res => {
+                resolve(res.data)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+
+
+export function uploadFile(url, formData) {
+    return new Promise((resolve, reject) => {
+        axios.post(url, formData , {
+            headers : {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err =>{
+                reject(err)
+            })
+    });
+}
+
+export function download(url) {
+    let config = {
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        responseType: 'blob'
+    }
+    return new Promise((resolve, reject) => {
+        axios.get(url, config).then(res => {
+
+            let disposition = res.headers['content-disposition']
+            let fileName = disposition.substring(disposition.indexOf('filename=') + 9, disposition.length)
+            fileName = decodeURI(fileName)
+            const blob = res.data
+            const reader = new FileReader()
+            reader.readAsDataURL(blob)
+            reader.onload = (e) => {
+                const a = document.createElement('a')
+                a.download = fileName
+                a.href = e.target.result
+                document.body.appendChild(a)
+                a.click()
+                document.body.removeChild(a)
+            }
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
+export function exportFile(url, data) {
+    let config = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        responseType: 'blob'
+    }
+
+    return new Promise((resolve, reject) => {
+        axios.post(url, data, config).then(res => {
+
+            let disposition = res.headers['content-disposition']
+            let fileName = disposition.substring(disposition.indexOf('filename=') + 9, disposition.length)
+            fileName = decodeURI(fileName)
+            const blob = res.data
+            const reader = new FileReader()
+            reader.readAsDataURL(blob)
+            reader.onload = (e) => {
+                const a = document.createElement('a')
+                a.download = fileName
+                a.href = e.target.result
+                document.body.appendChild(a)
+                a.click()
+                document.body.removeChild(a)
+            }
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
