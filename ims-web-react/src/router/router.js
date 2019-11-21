@@ -11,17 +11,15 @@ import store from "../redux/store/demo";
 const getRouter = () => (
     <Router>
         <Provider store={store}>
-            <div>
-                {/*<ul>*/}
-                {/*    <li><Link to="/">首页</Link></li>*/}
-                {/*    <li><Link to="/menu">菜单</Link></li>*/}
-                {/*</ul>*/}
-                <Switch>
-                    <Route exact path="/" component={App}/>
-                    <Route path="/redux" component={Demo}/>
-                    <Route path="/menu" component={List}/>
-                </Switch>
-            </div>
+            {/*<ul>*/}
+            {/*    <li><Link to="/">首页</Link></li>*/}
+            {/*    <li><Link to="/menu">菜单</Link></li>*/}
+            {/*</ul>*/}
+            <Switch>
+                <Route exact path="/" component={App}/>
+                <Route path="/redux" component={Demo}/>
+                <Route path="/menu" component={List}/>
+            </Switch>
         </Provider>
     </Router>
 );

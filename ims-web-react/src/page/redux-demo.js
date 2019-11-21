@@ -1,25 +1,45 @@
-import {increment} from '../redux/actions/demo';
+import {increase} from '../redux/actions/demo';
 import React from 'react'
 import { connect } from 'react-redux';
 
-export class ReduxDemo extends React.Component {
+class ReduxDemo extends React.Component {
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     constructor(props) {
         super(props);
     }
 
     onClick() {
-        this.props.dispatch(increment())
+        this.props.dispatch(increase())
     }
 
     render() {
+        const { PayIncrease, PayDecrease } = this.props;
         return (
-            <div>{this.props.number}<button onClick={()=>this.onClick()}>点击+1</button></div>
+            <div>
+                <h2>当月工资为{this.props.tiger}</h2>
+                <button onClick={PayIncrease}>升职加薪</button>
+                <button onClick={PayDecrease}>迟到罚款</button>
+            </div>
         )
     }
 }
 
-export default connect(
-    state => ({
-        number: state.number
-    })
-)(ReduxDemo);
+//需要渲染什么数据
+function mapStateToProps(state) {
+    return {
+        tiger: state
+    }
+}
+//需要触发什么行为
+function mapDispatchToProps(dispatch) {
+    return {
+        PayIncrease: () => dispatch({ type: '涨工资' }),
+        PayDecrease: () => dispatch({ type: '扣工资' })
+    }
+}
+
+//连接组件
+export default ReduxDemo = connect(mapStateToProps, mapDispatchToProps)(ReduxDemo)

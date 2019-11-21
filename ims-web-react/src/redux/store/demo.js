@@ -1,6 +1,7 @@
 import {createStore} from 'redux';
-import combineReducers from '../reducers/index';
+import reducer from '../reducers/demo';
 
-let store = createStore(combineReducers);
+//创建store
+let store = createStore(reducer);
 
 export default store;
