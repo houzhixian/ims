@@ -1,15 +1,9 @@
-const initialState = {
-    number: 0
-};
+import demo from './demo';
 
-const incrementReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case 'INCREMENT': {
-            state.number += 1
-            return { ...state }
-            break
-        };
-        default: return state;
+export function combineReducers(state = {}, action) {
+    return {
+        counter: demo(state.counter, action)
     }
-};
-export default incrementReducer;
+}
+
+export default combineReducers;
