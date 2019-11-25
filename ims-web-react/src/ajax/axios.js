@@ -1,20 +1,22 @@
 import {baseURL} from '../config/config'
+import {axios} from 'axios'
 
 // 封装ajax请求
 
-import axios from "axios";
-
-axios.defaults.timeout = 10000 //超时取消请求
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
-axios.defaults.baseURL = baseURL
-
-export default axios.create({
+const fetch = axios.create({
     baseURL: baseURL,
+    timeout: 2000,
     responseType: "json"
 });
 
+fetch.defaults.timeout = 10000 //超时取消请求
+fetch.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+fetch.defaults.baseURL = baseURL
 
-axios.interceptors.request.use(config => {
+
+
+
+fetch.interceptors.request.use(config => {
     config.setHeaders([
         {
             "token" : ""
@@ -23,7 +25,9 @@ axios.interceptors.request.use(config => {
     return config
 })
 
-axios.interceptors.response.use
+fetch.interceptors.response.use(config => {
+
+})
 
 
 export function get(url){
@@ -33,7 +37,7 @@ export function get(url){
         }
     }
     return new Promise((resolve, reject) => {
-        axios.get(url, config)
+        fetch.get(url, config)
             .then(res => {
                 resolve(res.data)
             })
@@ -61,7 +65,7 @@ export function post(url, params) {
         }
     }
     return new Promise((resolve, reject) => {
-        axios.post(url, params, config)
+        fetch.post(url, params, config)
             .then(res => {
                 resolve(res.data);
             })
@@ -79,7 +83,7 @@ export function del(url, params) {
         }
     }
     return new Promise((resolve, reject) => {
-        axios.delete(url, params, config)
+        fetch.delete(url, params, config)
             .then(res => {
                 resolve(res.data)
             })
@@ -92,7 +96,7 @@ export function del(url, params) {
 
 export function uploadFile(url, formData) {
     return new Promise((resolve, reject) => {
-        axios.post(url, formData , {
+        fetch.post(url, formData , {
             headers : {
                 'Content-Type': 'multipart/form-data'
             }
@@ -114,7 +118,7 @@ export function download(url) {
         responseType: 'blob'
     }
     return new Promise((resolve, reject) => {
-        axios.get(url, config).then(res => {
+        fetch.get(url, config).then(res => {
 
             let disposition = res.headers['content-disposition']
             let fileName = disposition.substring(disposition.indexOf('filename=') + 9, disposition.length)
@@ -145,7 +149,7 @@ export function exportFile(url, data) {
     }
 
     return new Promise((resolve, reject) => {
-        axios.post(url, data, config).then(res => {
+        fetch.post(url, data, config).then(res => {
 
             let disposition = res.headers['content-disposition']
             let fileName = disposition.substring(disposition.indexOf('filename=') + 9, disposition.length)
