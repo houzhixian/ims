@@ -7,9 +7,9 @@ class ReduxDemo extends React.Component {
         console.log(this.props)
     }
 
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     onClick() {
         this.props.dispatch(increase())

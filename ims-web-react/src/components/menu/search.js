@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Input, Form, Row, Col, Button, Icon } from 'antd';
+import { Input, Form, Row, Col, Button} from 'antd';
 
 class MenuSearch extends Component {
     handleReset = () => {
