@@ -1,9 +1,9 @@
 'use strict';
 
-// import express from 'express'
-// import Mock from 'mockjs'
-var express = require('express')
-var Mock = require('mockjs')
+import list from './menu/list'
+
+var express = require('express');
+var Mock = require('mockjs');
 
 const apiRoutes = express.Router();
 
@@ -32,5 +32,13 @@ apiRoutes.get('/idList', function(req, res) {
         });
     }, random);
 });
+
+apiRoutes.post('/menu/query', function (req, res) {
+    setTimeout(() => {
+        let start = 0
+        let length = 10
+        res.json(list(start, length))
+    })
+})
 
 module.exports = apiRoutes;
