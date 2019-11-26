@@ -1,5 +1,5 @@
 import {baseURL} from '../config/config'
-import {axios} from 'axios'
+import axios from 'axios'
 
 // 封装ajax请求
 
@@ -17,11 +17,11 @@ fetch.defaults.baseURL = baseURL
 
 
 fetch.interceptors.request.use(config => {
-    config.setHeaders([
-        {
-            "token" : ""
-        }
-    ])
+    // config.setHeaders([
+    //     {
+    //         "token" : ""
+    //     }
+    // ])
     return config
 })
 
