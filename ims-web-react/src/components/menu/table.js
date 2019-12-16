@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Table, Button} from 'antd';
 import {getMenuList} from '../../apis/api'
 import {pageDefault} from '../../config/config'
-import {SourceModal} from './modal/SourceModal'
+import SourceModal from './modal/SourceModal'
 
 class MenuTable extends Component {
 
@@ -162,8 +162,9 @@ class MenuTable extends Component {
 
     source_modal_show(data) {
         this.source_modal.showModal()
-
     }
+
+    rowData = {}
 
     render() {
         return (
@@ -178,7 +179,7 @@ class MenuTable extends Component {
                     scroll={{ x: true }}
                     bordered
                 />
-                <SourceModal onRef = {this.onRef}/>
+                <SourceModal onRef = {this.onRef} data={this.rowData} />
             </div>
         )
     }

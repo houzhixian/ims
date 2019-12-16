@@ -15,7 +15,6 @@ class MenuSearch extends Component {
                 console.log("search area: " + JSON.stringify(formParams))
                 this.props.changeParam(formParams)
             })
-            
         };
         const {getFieldDecorator} = this.props.form;
 
