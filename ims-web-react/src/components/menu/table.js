@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Table, Button} from 'antd';
 import {getMenuList} from '../../apis/api'
 import {pageDefault} from '../../config/config'
+import {SourceModal} from './modal/SourceModal'
 
 class MenuTable extends Component {
 
@@ -88,8 +89,8 @@ class MenuTable extends Component {
             fixed: 'right',
             render: (text, record) => (
                 <span>
-                    <Button type="link" onClick={this.edit}>编辑</Button>
-                    <Button type="link" onClick={this.remove}>删除</Button>
+                    <Button type="link" onClick={() => this.edit(record)}>编辑</Button>
+                    <Button type="link" onClick={() => this.remove(record)}>删除</Button>
                 </span>
             )
         },
@@ -122,8 +123,8 @@ class MenuTable extends Component {
         getMenuList(params).then(data => {
             const pagination = { ...this.state.pagination };
             // Read total count from server
-            // pagination.total = data.totalCount;
-            pagination.total = 200;
+            pagination.total = data.iTotalRecords;
+            // pagination.total = 200;
             this.setState({
                 loading: false,
                 data: data.data,
@@ -146,12 +147,22 @@ class MenuTable extends Component {
     }
 
 
-    edit() {
-        console.log("edit")
+    edit(record) {
+        console.log("edit" + record)
+        this.source_modal_show(record)
     }
 
-    remove() {
-        console.log("remove")
+    remove(record) {
+        console.log("remove" + record)
+    }
+
+    onRef = (ref) => {
+        this.source_modal = ref
+    }
+
+    source_modal_show(data) {
+        this.source_modal.showModal()
+
     }
 
     render() {
@@ -167,6 +178,7 @@ class MenuTable extends Component {
                     scroll={{ x: true }}
                     bordered
                 />
+                <SourceModal onRef = {this.onRef}/>
             </div>
         )
     }

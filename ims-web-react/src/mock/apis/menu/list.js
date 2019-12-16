@@ -2,8 +2,8 @@ export default (page_start, page_length) => {
 
     let result = {
         code: 0,
-        iTotalDisplayRecords: page_length == null ? 10 : page_length,
-        iTotalRecords: page_length == null ? 10 : page_length,
+        iTotalDisplayRecords: (page_length == null ? 10 : page_length) * (page_start + 1),
+        iTotalRecords: (page_length == null ? 10 : page_length) * (page_start + 1),
         message: null,
         result: null
     }
