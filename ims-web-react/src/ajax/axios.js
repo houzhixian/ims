@@ -1,5 +1,6 @@
-import {baseURL} from '../config/config'
+import {baseURL, mockURL, errMessage} from '../config/config'
 import axios from 'axios'
+import {message} from 'antd'
 
 // 封装ajax请求
 
@@ -11,23 +12,19 @@ const fetch = axios.create({
 
 fetch.defaults.timeout = 10000 //超时取消请求
 fetch.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
-fetch.defaults.baseURL = baseURL
+fetch.defaults.baseURL = mockURL
+// fetch.defaults.baseURL = baseURL
 
 
 
 
-fetch.interceptors.request.use(config => {
-    // config.setHeaders([
-    //     {
-    //         "token" : ""
-    //     }
-    // ])
-    return config
-})
+// fetch.interceptors.request.use(config => {
+//     return config
+// })
 
-fetch.interceptors.response.use(config => {
-
-})
+// fetch.interceptors.response.use(config => {
+//     return config
+// })
 
 
 export function get(url){
@@ -67,11 +64,11 @@ export function post(url, params) {
     return new Promise((resolve, reject) => {
         fetch.post(url, params, config)
             .then(res => {
-                resolve(res.data);
+                resolve(res.data)
             })
             .catch(err =>{
-                console.error(err)
-                reject(err)
+                // reject(err)
+                handleError(err, reject)
             })
     });
 }
@@ -169,4 +166,13 @@ export function exportFile(url, data) {
             reject(err)
         })
     })
+}
+
+
+function handleError(err, reject) {
+    console.error(err)
+
+    message.error(errMessage.sys_common_err)
+
+    if (reject != null) reject(err)
 }

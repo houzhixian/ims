@@ -11,8 +11,11 @@ class MenuSearch extends Component {
             e.preventDefault();
             console.log("menu search")
             this.props.form.validateFields((err, values) => {
-                console.log(values.menuId);
+                let formParams = this.props.form.getFieldsValue();
+                console.log("search area: " + JSON.stringify(formParams))
+                this.props.changeParam(formParams)
             })
+            
         };
         const {getFieldDecorator} = this.props.form;
 

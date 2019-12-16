@@ -22,3 +22,12 @@
 .App-link {
   color: #09d3ac;
 }
+
+.retract-x {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.search-table-gap {
+  margin-top: 6px;
+}

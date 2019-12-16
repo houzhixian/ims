@@ -1,4 +1,4 @@
-import {axios, get, post} from "../ajax/axios";
+import {get, post} from "../ajax/axios";
 
 
 export const getExample = (data) => get('/test', data)
