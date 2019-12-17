@@ -179,7 +179,7 @@ class MenuTable extends Component {
                     scroll={{ x: true }}
                     bordered
                 />
-                <SourceModal onRef = {this.onRef} data={this.rowData} />
+                <SourceModal onRef={this.onRef} data={this.rowData} />
             </div>
         )
     }

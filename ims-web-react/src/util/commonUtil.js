@@ -1,8 +1,10 @@
-import React, {Component} from 'react';
-import {Select, Option} from "antd"
+import React from 'react';
+import {Select} from "antd"
+
+const { Option } = Select;
 
 export function getSelect(values) {
-    if (values == null || values.size == 0) {
+    if (values === null || values.size === 0) {
         return (
             <Select>
                 <Option>没有数据</Option>
@@ -14,7 +16,7 @@ export function getSelect(values) {
         <Select>
         {
           values.map((item, index) => {
-            return (<Option key={index} value={item.code}>{item.value}</Option>)
+            return (<Option key={item.value} value={item.value}>{item.name}</Option>)
           })
         }
         </Select>
@@ -22,7 +24,7 @@ export function getSelect(values) {
 }
 
 export function getSelectSearchable(values) {
-    if (values == null || values.size == 0) {
+    if (values === null || values.size === 0) {
         return (
             <Select>
                 <Option>没有数据</Option>
@@ -38,7 +40,7 @@ export function getSelectSearchable(values) {
         >
         {
           values.map((item, index) => {
-            return (<Option key={index} value={item.code}>{item.value}</Option>)
+            return (<Option key={item.value} value={item.value}>{item.name}</Option>)
           })
         }
         </Select>

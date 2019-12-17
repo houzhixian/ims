@@ -35,3 +35,5 @@ export const pageDefault = {
     pageSize : 10,
     pageNo: 1
 }
+
+export const modalWidthDefault = 800

@@ -30,3 +30,5 @@ export const sys_type = [{
     value: 2,
     name: "IMS-WEB"
 }]
+
+export const check_confirm_default = "是否提交当前数据"
