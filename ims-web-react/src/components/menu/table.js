@@ -98,7 +98,13 @@ class MenuTable extends Component {
 
     state = {
         data: [],
-        pagination: {},
+        pagination: {
+            pageSizeOptions: [10, 25, 50, 100, 200],
+            showSizeChanger: true,
+            hideOnSinglePage: false,
+            showQuickJumper: true
+
+        },
         loading: false,
     };
 

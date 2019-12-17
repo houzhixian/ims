@@ -6,11 +6,17 @@ import App from '../App';
 import Demo from '../page/redux-demo';
 import {Provider} from "react-redux";
 import store from "../redux/store/demo";
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
+import moment from 'moment';
 
+
+moment.locale('zh-cn');
 
 const getRouter = () => (
-    <Router>
-        <Provider store={store}>
+    <ConfigProvider locale={zhCN}>
+        <Router>
+            <Provider store={store}>
             {/*<ul>*/}
             {/*    <li><Link to="/">首页</Link></li>*/}
             {/*    <li><Link to="/menu">菜单</Link></li>*/}
@@ -22,6 +28,8 @@ const getRouter = () => (
             </Switch>
         </Provider>
     </Router>
+    </ConfigProvider>
+    
 );
 
 export default getRouter;
