@@ -1,10 +1,25 @@
 import React, {Component} from 'react'
 import { Input, Form, Row, Col, Button} from 'antd';
+import SourceModal from './modal/SourceModal';
 
 class MenuSearch extends Component {
     handleReset = () => {
         this.props.form.resetFields();
     };
+
+    create = () => {
+        this.source_modal_show();
+    }
+
+    onRef = (ref) => {
+        this.source_modal = ref
+    }
+
+    source_modal_show(data) {
+        this.source_modal.showModal()
+    }
+
+    rowData = {}
 
     render() {
         let search = (e) => {
@@ -20,6 +35,7 @@ class MenuSearch extends Component {
 
         return (
             <div>
+                <SourceModal onRef={this.onRef} data={this.rowData} type="create"/>
                 <Form layout="horizontal" onSubmit={search}>
                     <Row gutter={24}>
                         <Col span={12}>
@@ -39,11 +55,14 @@ class MenuSearch extends Component {
                     </Row>
                     <Row>
                         <Col span={24} style={{ textAlign: 'right' }}>
-                            <Button type="primary" htmlType="submit" onClick={search}>
-                                Search
+                            <Button type="primary" htmlType="button" onClick={this.create}>
+                                新增
+                            </Button>
+                            <Button style={{ marginLeft: 8 }} type="primary" htmlType="submit" onClick={search}>
+                                查询
                             </Button>
                             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
-                                Clear
+                                重置
                             </Button>
                         </Col>
                     </Row>

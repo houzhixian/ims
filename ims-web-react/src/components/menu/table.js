@@ -99,7 +99,7 @@ class MenuTable extends Component {
     state = {
         data: [],
         pagination: {
-            pageSizeOptions: [10, 25, 50, 100, 200],
+            pageSizeOptions: ["10", "25", "50", "100", "200"],
             showSizeChanger: true,
             hideOnSinglePage: false,
             showQuickJumper: true
@@ -185,7 +185,7 @@ class MenuTable extends Component {
                     scroll={{ x: true }}
                     bordered
                 />
-                <SourceModal onRef={this.onRef} data={this.rowData} />
+                <SourceModal onRef={this.onRef} data={this.rowData} type="modify"/>
             </div>
         )
     }

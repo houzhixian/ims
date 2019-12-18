@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'production') { // 发布环境
 
 
 export const errMessage = {
-    sys_common_err :    "服务器出现了一点问题",
+    sys_common_err :    "服务器出现了一点问题(ಥ﹏ಥ)",
     unknown_err:        "未知异常"
 }
 

@@ -22,12 +22,21 @@ fetch.defaults.baseURL = mockURL
 //     return config
 // })
 
-// fetch.interceptors.response.use(config => {
-//     return config
-// })
+// fetch.interceptors.response.use(
+//     (response) => {return response;},
+//     (err) => handleError(err)
+// )
+ 
+fetch.interceptors.response.use((response) => {
+    return response;
+  }, (error) => {
+    // return Promise.reject(error);
+    message.error(errMessage.sys_common_err)
+    return Promise.reject(error)
+  });
 
 
-export function get(url){
+export function get(url, callback_success, callback_error){
     let config = {
         headers: {
             'Content-Type' : 'application/json'
@@ -37,21 +46,23 @@ export function get(url){
         fetch.get(url, config)
             .then(res => {
                 resolve(res.data)
+                callback_success(res.data)
             })
             .catch(err => {
                 reject(err)
+                callback_error(err)
             })
     })
 }
 
-export function getWithParam(url, param) {
+export function getWithParam(url, param, callback_success, callback_error) {
     url += "?";
     if (param instanceof Map) {
         for (let [key, value] of param) {
             url += key + "=" + value + "&"
         }
     }
-    get(url.substr(0, url.length - 1))
+    get(url.substr(0, url.length - 1), callback_success, callback_error)
 }
 
 
@@ -67,8 +78,8 @@ export function post(url, params) {
                 resolve(res.data)
             })
             .catch(err =>{
-                // reject(err)
-                handleError(err, reject)
+                reject(err)
+                // handleError(err, reject)
             })
     });
 }
@@ -169,10 +180,10 @@ export function exportFile(url, data) {
 }
 
 
-function handleError(err, reject) {
-    console.error(err)
+// function handleError(err, reject) {
+//     console.error(err)
 
-    message.error(errMessage.sys_common_err)
+//     message.error(errMessage.sys_common_err)
 
-    if (reject != null) reject(err)
-}
+//     if (reject != null) reject(err)
+// }
