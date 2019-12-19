@@ -15,6 +15,7 @@ class MenuTable extends Component {
     componentDidMount() {
         this.props.onRef(this)
         this.fetch();
+        this.refresh = this.refresh.bind(this)
     }
 
 
@@ -115,6 +116,7 @@ class MenuTable extends Component {
         loading: false,
         search_object: {},
         remove_object: {},
+        rowData: {},
     };
 
     handleTableChange = (pagination, filters, sorter) => {
@@ -169,6 +171,9 @@ class MenuTable extends Component {
         let default_pageSize = pageDefault.pageSize == null ? 10 : pageDefault.pageSize
         pagination.current = default_pageNo
         pagination.pageSize = default_pageSize
+        this.setState({
+            pagination
+        })
     }
 
     refresh = () => {
@@ -178,7 +183,9 @@ class MenuTable extends Component {
 
 
     edit(record) {
-        this.source_modal_show(record)
+        this.setState({
+            rowData: record,
+        }, () => {this.source_modal_show()})
     }
 
     remove(record) {
@@ -186,15 +193,15 @@ class MenuTable extends Component {
             remove_object : {
                 menuId : record.menuId
             }
-        })
-        this.checkRef.showModal(record)
+        }, () => {this.checkRef.showModal(record)})
+        
     }
 
     onRef = (ref) => {
         this.source_modal = ref
     }
 
-    source_modal_show(data) {
+    source_modal_show() {
         this.source_modal.showModal()
     }
 
@@ -246,7 +253,7 @@ class MenuTable extends Component {
                 />
                 <SourceModal 
                     onRef={this.onRef} 
-                    data={this.rowData} 
+                    data={this.state.rowData} 
                     refresh={this.refresh}
                     type="modify"
                 />

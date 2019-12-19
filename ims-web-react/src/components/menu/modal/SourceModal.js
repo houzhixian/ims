@@ -93,6 +93,8 @@ class SourceModal extends Component {
       if (data.code === 0) {
         _this.closeModal();
         message.info("保存成功")
+        // 刷新页面
+        this.props.refresh()
         return;
       }
 

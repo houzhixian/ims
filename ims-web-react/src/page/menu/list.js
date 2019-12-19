@@ -13,7 +13,7 @@ export default class list extends Component {
         this.setState({
             search_params : param == null ? {} : param
         }, () => {
-            console.log("params at body:{}" + JSON.stringify(this.state.search_params))
+            // console.log("params at body:{}" + JSON.stringify(this.state.search_params))
             this.param_change_search(search_flag);
         })
         
