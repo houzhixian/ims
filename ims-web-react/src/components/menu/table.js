@@ -8,9 +8,11 @@ import {delete_confirm_default} from '../../config/const'
 
 class MenuTable extends Component {
 
-    // constructor(props){
-    //     super(props);
-    // }
+    constructor(props){
+        super(props);
+        this.trueOk = this.trueOk.bind(this)
+        this.fetch = this.fetch.bind(this)
+    }
 
     componentDidMount() {
         this.props.onRef(this)
@@ -93,7 +95,7 @@ class MenuTable extends Component {
             render: (text, record) => (
                 <span>
                     <Button type="link" onClick={() => this.edit(record)}>编辑</Button>
-                    <Button type="link" onClick={() => this.remove(record)}>删除</Button>
+                    <Button type="link" onClick={() => this.delete(record)}>删除</Button>
                 </span>
             )
         },
@@ -110,8 +112,6 @@ class MenuTable extends Component {
             showSizeChanger: true,
             total: 0,
             showTotal: (total, range) => `当前第${range[0]}-${range[1]}条 共计${total}条`,
-            
-
         },
         loading: false,
         search_object: {},
@@ -165,7 +165,7 @@ class MenuTable extends Component {
         })
     }
 
-    back_to_page_one = () => {
+    back_to_page_one = (next) => {
         const pagination = { ...this.state.pagination };
         let default_pageNo = pageDefault.pageNo == null ? 1 : pageDefault.pageNo
         let default_pageSize = pageDefault.pageSize == null ? 10 : pageDefault.pageSize
@@ -173,36 +173,38 @@ class MenuTable extends Component {
         pagination.pageSize = default_pageSize
         this.setState({
             pagination
+        }, () => {
+            if (next != null) {
+                next()
+            }
         })
     }
 
     refresh = () => {
-        this.back_to_page_one()
-        this.fetch()
+        this.back_to_page_one(this.fetch)
     }
 
 
     edit(record) {
+        console.log("edit")
         this.setState({
             rowData: record,
-        }, () => {this.source_modal_show()})
+        })
+        console.log("source open")
+        this.source_modal.showModal()
     }
 
-    remove(record) {
-        this.setState = ({
-            remove_object : {
-                menuId : record.menuId
-            }
-        }, () => {this.checkRef.showModal(record)})
-        
+    delete(record) {
+        console.log("remove")
+        this.setState({
+            remove_object : record
+        })
+        console.log("remove confirm open ")
+        this.checkRef.showModal(record)
     }
 
     onRef = (ref) => {
         this.source_modal = ref
-    }
-
-    source_modal_show() {
-        this.source_modal.showModal()
     }
 
     onCheckRef = (ref) => {
@@ -215,21 +217,10 @@ class MenuTable extends Component {
         let req_param = {
             menuId: menuIdToDelete
         }
-        let _this = this
         menu_doDelete(req_param).then(data => {
-            this.delete_row_in_table(menuIdToDelete, _this)
+            this.fetch()
         })
     }
-
-    delete_row_in_table(menuId, _this) {
-        const { data } = this.state;
-        const newData = data;
-        const index = newData.findIndex((record) => menuId === record.menuId);
-        newData.splice(index, 1);
-        _this.setState({ data: newData });
-    }
-
-    rowData = {}
 
     render() {
         
@@ -237,8 +228,8 @@ class MenuTable extends Component {
         return (
             <div className="">
                 <ConfirmCheck 
-                    onRef={this.onCheckRef} 
-                    trueOk={this.trueOk} 
+                    onRef={this.onCheckRef.bind(this)} 
+                    trueOk={this.trueOk.bind(this)} 
                     check_confirm={delete_confirm_default} 
                 />
                 <Table

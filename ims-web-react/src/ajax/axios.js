@@ -1,7 +1,7 @@
 import {baseURL, mockURL, errMessage} from '../config/config'
 import axios from 'axios'
 import {message} from 'antd'
-import {getCookie} from '../util/cookieUtil'
+// import {getCookie} from '../util/cookieUtil'
 
 // 封装ajax请求
 

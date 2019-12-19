@@ -40,8 +40,7 @@ apiRoutes.get('/idList', function(req, res) {
 
 apiRoutes.post('/menu/query', upload.none(), function (req, res) {
     setTimeout(() => {
-        console.log(req.body)
-        
+        // console.log(req.body)
         res.json(list(req.body.start, req.body.length))
     })
 })
