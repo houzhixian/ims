@@ -32,3 +32,4 @@ export const sys_type = [{
 }]
 
 export const check_confirm_default = "是否提交当前数据"
+export const delete_confirm_default = "是否删除当前数据"

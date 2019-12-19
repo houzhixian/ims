@@ -1,9 +1,14 @@
 'use strict';
 
 import list from './menu/list'
+import add from './menu/add'
+import update from './menu/update'
+import remove from './menu/remove'
 
 var express = require('express');
 var Mock = require('mockjs');
+const multer = require('multer');
+const upload = multer();
 
 const apiRoutes = express.Router();
 
@@ -33,12 +38,31 @@ apiRoutes.get('/idList', function(req, res) {
     }, random);
 });
 
-apiRoutes.post('/menu/query', function (req, res) {
+apiRoutes.post('/menu/query', upload.none(), function (req, res) {
     setTimeout(() => {
-        let start = 0
-        let length = 10
-        res.json(list(start, length))
+        console.log(req.body)
+        
+        res.json(list(req.body.start, req.body.length))
     })
+})
+
+
+apiRoutes.get('/menu/doAdd', (req, res) => {
+    setTimeout(() => {
+        res.json(add())
+    }, 200)
+})
+
+apiRoutes.get('/menu/doUpdate', (req, res) => {
+    setTimeout(() => {
+        res.json(update())
+    }, 200)
+})
+
+apiRoutes.get('/menu/doDelete', (req, res) => {
+    setTimeout(() => {
+        res.json(remove())
+    }, 200)
 })
 
 module.exports = apiRoutes;

@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import {Table, Button} from 'antd';
-import {getMenuList} from '../../apis/api'
+import {getMenuList, menu_doDelete} from '../../apis/api'
 import {pageDefault} from '../../config/config'
 import SourceModal from './modal/SourceModal'
+import ConfirmCheck from '../common/confirmCheckModal'
+import {delete_confirm_default} from '../../config/const'
 
 class MenuTable extends Component {
 
@@ -99,13 +101,20 @@ class MenuTable extends Component {
     state = {
         data: [],
         pagination: {
+            defaultCurrent: 1,
+            current: 1,
+            defaultPageSize: 10,
+            pageSize: 10,
             pageSizeOptions: ["10", "25", "50", "100", "200"],
             showSizeChanger: true,
-            hideOnSinglePage: false,
-            showQuickJumper: true
+            total: 0,
+            showTotal: (total, range) => `当前第${range[0]}-${range[1]}条 共${total} items`,
+            
 
         },
         loading: false,
+        search_object: {},
+        remove_object: {},
     };
 
     handleTableChange = (pagination, filters, sorter) => {
@@ -113,19 +122,23 @@ class MenuTable extends Component {
         pager.current = pagination.current;
         this.setState({
             pagination: pager,
-        });
-        this.fetch({
-            results: pagination.pageSize,
-            page: pagination.current,
-            sortField: sorter.field,
-            sortOrder: sorter.order,
-            ...filters,
+        }, () => {
+            this.fetch();
         });
     };
 
-    fetch = (params = {}) => {
-        console.log('params:', params);
+    fetch = () => {
         this.setState({ loading: true });
+        let search_object = this.state.search_object;
+        let current = this.state.pagination.current
+        let pageSize = this.state.pagination.pageSize
+        let params = {
+            ...search_object, 
+            start: current,
+            length: pageSize
+        }
+        console.log(this.state)
+        console.log('params:', params);
         getMenuList(params).then(data => {
             const pagination = { ...this.state.pagination };
             // Read total count from server
@@ -139,9 +152,15 @@ class MenuTable extends Component {
         });
     };
 
-    param_change_search = (search_params) => {
+    param_change_search = (search_params, search_flag) => {
         this.back_to_page_one();
-        this.fetch(search_params)
+        this.setState({
+            search_object: search_params
+        }, () => {
+            if (search_flag) {
+                this.fetch()
+            }
+        })
     }
 
     back_to_page_one = () => {
@@ -152,14 +171,23 @@ class MenuTable extends Component {
         pagination.pageSize = default_pageSize
     }
 
+    refresh = () => {
+        this.back_to_page_one()
+        this.fetch()
+    }
+
 
     edit(record) {
-        console.log("edit" + record)
         this.source_modal_show(record)
     }
 
     remove(record) {
-        console.log("remove" + record)
+        this.setState = ({
+            remove_object : {
+                menuId : record.menuId
+            }
+        })
+        this.checkRef.showModal(record)
     }
 
     onRef = (ref) => {
@@ -170,11 +198,42 @@ class MenuTable extends Component {
         this.source_modal.showModal()
     }
 
+    onCheckRef = (ref) => {
+        this.checkRef = ref
+    }
+
+    trueOk = (record) => {
+        console.log("table delete");
+        let menuIdToDelete = record.menuId
+        let req_param = {
+            menuId: menuIdToDelete
+        }
+        let _this = this
+        menu_doDelete(req_param).then(data => {
+            this.delete_row_in_table(menuIdToDelete, _this)
+        })
+    }
+
+    delete_row_in_table(menuId, _this) {
+        const { data } = this.state;
+        const newData = data;
+        const index = newData.findIndex((record) => menuId === record.menuId);
+        newData.splice(index, 1);
+        _this.setState({ data: newData });
+    }
+
     rowData = {}
 
     render() {
+        
+
         return (
             <div className="">
+                <ConfirmCheck 
+                    onRef={this.onCheckRef} 
+                    trueOk={this.trueOk} 
+                    check_confirm={delete_confirm_default} 
+                />
                 <Table
                     columns={this.columns}
                     rowKey={record => record.menuId}
@@ -185,7 +244,12 @@ class MenuTable extends Component {
                     scroll={{ x: true }}
                     bordered
                 />
-                <SourceModal onRef={this.onRef} data={this.rowData} type="modify"/>
+                <SourceModal 
+                    onRef={this.onRef} 
+                    data={this.rowData} 
+                    refresh={this.refresh}
+                    type="modify"
+                />
             </div>
         )
     }

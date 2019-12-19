@@ -5,6 +5,7 @@ import SourceModal from './modal/SourceModal';
 class MenuSearch extends Component {
     handleReset = () => {
         this.props.form.resetFields();
+        this.props.changeParam({}, false)
     };
 
     create = () => {
@@ -24,11 +25,10 @@ class MenuSearch extends Component {
     render() {
         let search = (e) => {
             e.preventDefault();
-            console.log("menu search")
             this.props.form.validateFields((err, values) => {
                 let formParams = this.props.form.getFieldsValue();
                 console.log("search area: " + JSON.stringify(formParams))
-                this.props.changeParam(formParams)
+                this.props.changeParam(formParams, true)
             })
         };
         const {getFieldDecorator} = this.props.form;

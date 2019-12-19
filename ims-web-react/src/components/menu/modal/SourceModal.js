@@ -66,32 +66,44 @@ class SourceModal extends Component {
          "menuInfo.permissionId" : this.props.data.permissionId,
       }
 
-      let method = null;
+    
       let type = this.props.type
+      let _this = this 
       if (type === "create") {
-        method = menu_doAdd(req_body, this.callback_success, this.callback_error)
+        menu_doAdd(req_body).then(data => {
+          _this.callback_success(data, _this)
+          
+        }).catch(err => {
+          _this.callback_error(err, _this)
+        })
       }
 
       if (type === "modify") {
-        method = menu_doUpdate(req_body, this.callback_success, this.callback_error);
+        menu_doUpdate(req_body).then(data => {
+          _this.callback_success(data, _this)
+        }).catch(err => {
+          _this.callback_error(err, _this)
+        })
       }
 
     }
 
-    callback_success = (data) => {
+    callback_success = (data, _this) => {
+      console.log(data)
       if (data.code === 0) {
-        this.closeModal();
+        _this.closeModal();
         message.info("保存成功")
         return;
       }
 
       let errorMessage = data.message == null ? errMessage.sys_common_err : data.message
       message.error(errorMessage)
-      this.setState({ loading: false });
+      _this.setState({ loading: false });
     }
 
-    callback_error = (err) => {
-      this.setState({ loading: false });
+    callback_error = (err, _this) => {
+      console.error(err)
+      _this.setState({ loading: false });
     }
 
     handleCancel = e => {

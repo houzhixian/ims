@@ -1,6 +1,7 @@
 import {baseURL, mockURL, errMessage} from '../config/config'
 import axios from 'axios'
 import {message} from 'antd'
+import {getCookie} from '../util/cookieUtil'
 
 // 封装ajax请求
 
@@ -46,11 +47,15 @@ export function get(url, callback_success, callback_error){
         fetch.get(url, config)
             .then(res => {
                 resolve(res.data)
-                callback_success(res.data)
+                // if (callback_success != null && typeof callback_success == "function") {
+                //     callback_success(res.data)
+                // }
             })
             .catch(err => {
                 reject(err)
-                callback_error(err)
+                // if (callback_error != null && typeof callback_error == "function") {
+                //     callback_error(err)
+                // }
             })
     })
 }
@@ -62,7 +67,7 @@ export function getWithParam(url, param, callback_success, callback_error) {
             url += key + "=" + value + "&"
         }
     }
-    get(url.substr(0, url.length - 1), callback_success, callback_error)
+    return get(url.substr(0, url.length - 1), callback_success, callback_error)
 }
 
 
@@ -82,6 +87,33 @@ export function post(url, params) {
                 // handleError(err, reject)
             })
     });
+}
+
+export function postWithFormData(url, params) {
+
+    let bodyFormData = new FormData();
+    if (params != null) {
+        for (let key in params) {
+            bodyFormData.set(key, params[key])
+        }
+    }
+
+    return new Promise((resolve, reject) => {
+        fetch({
+            method: 'post',
+            url: url,
+            data: bodyFormData,
+            headers: {
+                "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8",
+                // "Cookie" : getCookie()
+            }
+        }).then(res => {
+            resolve(res.data)
+        }).catch(err => {
+            reject(err)
+        })
+    });
+
 }
 
 export function del(url, params) {

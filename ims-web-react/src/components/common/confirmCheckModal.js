@@ -2,6 +2,7 @@ import React from 'react'
 import {Button, Modal} from 'antd'
 import {check_confirm_default} from '../../config/const'
 
+
 class ConfirmCheck extends React.Component {
 
     componentDidMount() {
@@ -9,27 +10,31 @@ class ConfirmCheck extends React.Component {
     }
 
     state = { 
-      visible: false
+      visible: false,
+      temp: {}
     };
   
-    showModal = () => {
+    showModal = (temp) => {
       this.setState({
-        visible: true
+        visible: true,
+        temp: temp
       });
     };
 
     handleOk = () => {
+        const { temp } = this.state
         this.setState({
             visible: false
         })
         // 回调父层原来的确定
-        this.props.trueOk();
+        this.props.trueOk(temp);
     };
     
     handleCancel = e => {
         console.log(e);
         this.setState({
-          visible: false
+          visible: false,
+          temp: {}
         });
     };
 
@@ -38,6 +43,7 @@ class ConfirmCheck extends React.Component {
         const { visible } = this.state;
 
         let body = this.props.check_confirm == null ? check_confirm_default : this.props.check_confirm
+
 
         return (
             <div>

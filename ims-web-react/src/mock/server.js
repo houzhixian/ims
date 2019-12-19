@@ -2,6 +2,9 @@ var apis = require('./apis')
 var express = require('express')
 var cors = require('cors')
 import {mockPort} from "../config/config"
+// var bodyParser = require('body-parser');
+
+
 
 // import {fs} from 'fs'
 
@@ -13,6 +16,11 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded());
+// in latest body-parser use like below.
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // app.get('/', function(req, res) {

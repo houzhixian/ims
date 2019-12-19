@@ -9,12 +9,12 @@ export default class list extends Component {
         search_params: {}
     }
 
-    changeSearchParam = (param) => {
+    changeSearchParam = (param, search_flag) => {
         this.setState({
             search_params : param == null ? {} : param
         }, () => {
             console.log("params at body:{}" + JSON.stringify(this.state.search_params))
-            this.param_change_search();
+            this.param_change_search(search_flag);
         })
         
     }
@@ -23,8 +23,8 @@ export default class list extends Component {
         this.table = ref;
     }
 
-    param_change_search = () => {
-        this.table.param_change_search(this.state.search_params);
+    param_change_search = (search_flag) => {
+        this.table.param_change_search(this.state.search_params, search_flag);
     }
 
 
