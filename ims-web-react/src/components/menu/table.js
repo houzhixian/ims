@@ -109,7 +109,7 @@ class MenuTable extends Component {
             pageSizeOptions: ["10", "25", "50", "100", "200"],
             showSizeChanger: true,
             total: 0,
-            showTotal: (total, range) => `当前第${range[0]}-${range[1]}条 共${total} items`,
+            showTotal: (total, range) => `当前第${range[0]}-${range[1]}条 共计${total}条`,
             
 
         },
