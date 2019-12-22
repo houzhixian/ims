@@ -46,3 +46,20 @@ export function getSelectSearchable(values) {
         </Select>
     )
 }
+
+
+export function randomString(length) {
+    if (length == null || length < 0) length = 16
+    let source = 'abxdefghijklmnopqrstuvwxyz0123456789'
+    let result = ''
+    let source_length = source.length - 1
+    for (let x = 0; length > x; x++) {
+        result += source.charAt(randomGap(0, source_length))
+    }
+    return result
+}
+
+// [min, max]
+export function randomGap(min, max) {
+    return parseInt(Math.random()*(max-min+1)+min,10);
+}

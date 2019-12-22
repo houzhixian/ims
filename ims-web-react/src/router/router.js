@@ -9,6 +9,7 @@ import store from "../redux/store/demo";
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
+import Org from '../page/org/index';
 
 
 moment.locale('zh-cn');
@@ -19,12 +20,13 @@ const getRouter = () => (
             <Provider store={store}>
             {/*<ul>*/}
             {/*    <li><Link to="/">首页</Link></li>*/}
-            {/*    <li><Link to="/menu">菜单</Link></li>*/}
+            {/*    <li><Link to="/menu">蝜坕</Link></li>*/}
             {/*</ul>*/}
             <Switch>
                 <Route exact path="/" component={App}/>
                 <Route path="/redux" component={Demo}/>
                 <Route path="/menu" component={List}/>
+                <Route path="/org" component={Org}/>
             </Switch>
         </Provider>
     </Router>

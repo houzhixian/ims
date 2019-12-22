@@ -37,7 +37,7 @@ fetch.interceptors.response.use((response) => {
   });
 
 
-export function get(url, callback_success, callback_error){
+export function get(url){
     let config = {
         headers: {
             'Content-Type' : 'application/json'
@@ -60,14 +60,14 @@ export function get(url, callback_success, callback_error){
     })
 }
 
-export function getWithParam(url, param, callback_success, callback_error) {
+export function getWithParam(url, param) {
     url += "?";
     if (param instanceof Map) {
         for (let [key, value] of param) {
             url += key + "=" + value + "&"
         }
     }
-    return get(url.substr(0, url.length - 1), callback_success, callback_error)
+    return get(url.substr(0, url.length - 1))
 }
 
 
