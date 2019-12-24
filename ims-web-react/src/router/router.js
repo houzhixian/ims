@@ -10,6 +10,7 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import Org from '../page/org/index';
+import Role from '../page/role/list';
 
 
 moment.locale('zh-cn');
@@ -27,6 +28,7 @@ const getRouter = () => (
                 <Route path="/redux" component={Demo}/>
                 <Route path="/menu" component={List}/>
                 <Route path="/org" component={Org}/>
+                <Route path="/role" component={Role}/>
             </Switch>
         </Provider>
     </Router>

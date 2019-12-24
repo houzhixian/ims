@@ -21,3 +21,9 @@ export const menu_doDelete = (param) => getWithParam('/menu/doDelete', param)
 export const getOrgTree = (param) => post('/org/manage/query/tree', param)
 
 
+// role
+
+export const getRoleList = (param) => postWithFormData('/role/query', param)
+
+export const deleteRole = (roleId) => post('', roleId)
+

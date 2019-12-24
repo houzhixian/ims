@@ -5,6 +5,7 @@ import add from './menu/add'
 import update from './menu/update'
 import remove from './menu/remove'
 import treeList from './org/list'
+import roleList from './role/list'
 
 var express = require('express');
 var Mock = require('mockjs');
@@ -69,7 +70,14 @@ apiRoutes.get('/menu/doDelete', (req, res) => {
 apiRoutes.post('/org/manage/query/tree', (req, res) => {
     setTimeout(() => {
         res.json(treeList())
-    })
+    }, 300)
+})
+
+
+apiRoutes.post('/role/query', upload.none(), (req, res) => {
+    setTimeout(() => {
+        res.json(roleList(req.body.start, req.body.length))
+    }, 300)
 })
 
 module.exports = apiRoutes;

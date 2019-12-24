@@ -1,35 +1,74 @@
-import React from 'react'
-import {getOrgTree} from '../../apis/api'
-import {Tree} from 'antd'
+import React from "react";
+import { getOrgTree } from "../../apis/api";
+import { Tree } from "antd";
 // import {randomString} from '../../util/commonUtil'
 
 const { TreeNode } = Tree;
 
 class orgTree extends React.Component {
-    state = {
-        treeData: [
-          {}
-        ],
-    };
+  state = {
+    treeData: [
+      //   { title: "Expand to load", key: "0" },
+      //   { title: "Expand to load", key: "1" },
+      //   { title: "Tree Node", key: "2", isLeaf: true }
+    ]
+  };
 
-    componentDidMount() {
-        
-    }
+  componentDidMount() {
+    //   this.onloadData()
+    console.log("tree init");
+    this.onLoadData({});
+  }
 
-    render() {
+  fresh = () => {
+    this.setState(
+      {
+        treeData: {}
+      },
+      () => {
+        this.onLoadData({});
+      }
+    );
+  };
 
+  onLoadData = treeNode =>
+    new Promise(resolve => {
+      console.log(treeNode);
+      if (treeNode.props.children) {
+        resolve();
+        return;
+      }
+      setTimeout(() => {
+        treeNode.props.dataRef.children = [
+          { title: "Child Node", key: `${treeNode.props.eventKey}-0` },
+          { title: "Child Node", key: `${treeNode.props.eventKey}-1` }
+        ];
+        this.setState({
+          treeData: [...this.state.treeData]
+        });
+        resolve();
+      }, 1000);
+    });
 
+  renderTreeNodes = data =>
+    data.map(item => {
+      if (item.children) {
         return (
-            <div>
+          <TreeNode title={item.title} key={item.key} dataRef={item}>
+            {this.renderTreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode key={item.key} {...item} dataRef={item} />;
+    });
 
-                <Tree>
-
-                </Tree>
-            </div>
-        )
-    }
-
-
+  render() {
+    return (
+      <Tree loadData={this.onLoadData}>
+        {this.renderTreeNodes(this.state.treeData)}
+      </Tree>
+    );
+  }
 }
 
 export default orgTree;
