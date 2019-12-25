@@ -139,8 +139,6 @@ class MenuTable extends Component {
             start: current,
             length: pageSize
         }
-        console.log(this.state)
-        console.log('params:', params);
         getMenuList(params).then(data => {
             const pagination = { ...this.state.pagination };
             // Read total count from server

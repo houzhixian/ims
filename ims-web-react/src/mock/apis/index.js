@@ -6,6 +6,9 @@ import update from './menu/update'
 import remove from './menu/remove'
 import treeList from './org/list'
 import roleList from './role/list'
+import permissionList from './role/permissionList'
+import userList from './role/userList'
+import orgInfo from './role/orgInfo'
 
 var express = require('express');
 var Mock = require('mockjs');
@@ -79,5 +82,24 @@ apiRoutes.post('/role/query', upload.none(), (req, res) => {
         res.json(roleList(req.body.start, req.body.length))
     }, 300)
 })
+
+apiRoutes.post('/role/permission/query', upload.none(), (req, res) => {
+    setTimeout(() => {
+        res.json(permissionList(req.body.start, req.body.length))
+    }, 300)
+})
+
+apiRoutes.post('/role/user/query', upload.none(), (req, res) => {
+    setTimeout(() => {
+        res.json(userList(req.body.start, req.body.length))
+    }, 200)
+})
+
+apiRoutes.get('/role/org/info', (req, res) => {
+    setTimeout(() => {
+        res.json(orgInfo(req))
+    })
+})
+
 
 module.exports = apiRoutes;
