@@ -35,3 +35,39 @@
 .search-table-gap {
   margin-top: 6px;
 }
+
+
+.tree-container {
+  background-color: #5090c1;
+  border-color: #5090c1;
+  /* padding-left: 12px; */
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  height: 48px;
+}
+
+.tree-content {
+  margin-top: 48px;
+}
+
+.tree-title {
+  color: #fff;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 48px;
+  /* display: inline; */
+  /* padding: 0; */
+  padding-left: 12px;
+  width: 20%;
+  margin-right: auto;
+}
+
+.header-button-area {
+  width: 20%;
+  border: none;
+  height: 200px;
+  margin-left: auto;
+  line-height: 48px;
+}

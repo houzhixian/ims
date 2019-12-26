@@ -15,11 +15,13 @@ class ConfirmCheck extends React.Component {
     };
   
     showModal = (temp) => {
-      console.log(temp)
+      // console.log(temp)
       this.setState({
         visible: true,
         temp: temp
-      }, () => {console.log(this.state)});
+      }, () => {
+        // console.log(this.state)
+      });
     };
 
     handleOk = () => {

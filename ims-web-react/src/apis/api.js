@@ -25,7 +25,7 @@ export const menu_doDelete = (param) => getWithParam('/menu/doDelete', param)
 // org
 
 // 组织树获取
-export const getOrgTree = (param) => post('/org/manage/query/tree', param)
+export const getOrgTree = (param) => postWithFormData('/org/manage/query/tree', param)
 
 
 // role
@@ -44,3 +44,9 @@ export const userList = (param) => postWithFormData('/role/user/query', param)
 
 // 组织明细
 export const orgInfo = (param) => getWithParam('/role/org/info', param)
+
+// 组织列表（供选择）
+export const orgSelectList = () => get('/role/org/info/select')
+
+// 新建组织
+export const createOrg = (param) => postWithFormData('/org/manage/create', param)

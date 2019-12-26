@@ -9,6 +9,8 @@ import roleList from './role/list'
 import permissionList from './role/permissionList'
 import userList from './role/userList'
 import orgInfo from './role/orgInfo'
+import orgSelectList from './org/orgSelectList'
+import createOrg from './org/create'
 
 var express = require('express');
 var Mock = require('mockjs');
@@ -101,5 +103,14 @@ apiRoutes.get('/role/org/info', (req, res) => {
     })
 })
 
+apiRoutes.get('/role/org/info/select', (req, res) => {
+    setTimeout(() => {
+        res.json(orgSelectList())
+    })
+})
+
+apiRoutes.post('/org/manage/create', upload.none(), (req, res) => {
+    res.json(createOrg())
+})
 
 module.exports = apiRoutes;

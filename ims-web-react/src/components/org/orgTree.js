@@ -1,8 +1,12 @@
 import React from "react";
 import { getOrgTree } from "../../apis/api";
-import { Tree } from "antd";
+import { Tree, Icon, Row, Col, Button, Layout } from "antd";
 // import {randomString} from '../../util/commonUtil'
+// const { Header, Footer, Sider, Content } = Layout;
+import CreateOrg from './modal/create'
 
+
+const { Header, Footer, Sider, Content } = Layout;
 const { TreeNode } = Tree;
 
 class orgTree extends React.Component {
@@ -17,56 +21,114 @@ class orgTree extends React.Component {
   componentDidMount() {
     //   this.onloadData()
     console.log("tree init");
-    this.onLoadData({});
+    this.onLoadData();
   }
 
   fresh = () => {
     this.setState(
       {
-        treeData: {}
+        treeData: []
       },
       () => {
-        this.onLoadData({});
+        this.onLoadData();
       }
     );
   };
 
   onLoadData = treeNode =>
     new Promise(resolve => {
-      console.log(treeNode);
-      if (treeNode.props.children) {
+      if (treeNode != null && treeNode.children != null) {
         resolve();
         return;
       }
-      setTimeout(() => {
-        treeNode.props.dataRef.children = [
-          { title: "Child Node", key: `${treeNode.props.eventKey}-0` },
-          { title: "Child Node", key: `${treeNode.props.eventKey}-1` }
-        ];
-        this.setState({
-          treeData: [...this.state.treeData]
-        });
+      let pid = treeNode == null ? 0 : treeNode.id;
+      getOrgTree(pid).then(data => {
+        // 初始化
+        if (treeNode == null) {
+          this.setState({
+            treeData: data.result
+          })
+        }
+
+        // 非初始化
+        if (treeNode != null) {
+          treeNode.props.dataRef.children = data.result;
+          this.setState({
+            treeData: [...this.state.treeData]
+          });
+        }
+
         resolve();
-      }, 1000);
+
+      }).catch(err => {
+        console.log(err)
+      })
+
     });
+
+
+  refresh = () => {
+    this.setState({
+      treeData: []
+    }, () => {
+      this.onLoadData()
+    })
+  }
+
+  create = () => {
+    this.openCreateModal();
+  }
+
+  onCreateRef = (ref) => {
+    this.create_modal = ref
+  }
+
+  openCreateModal = () => {
+    this.create_modal.showModal();
+  }
+
 
   renderTreeNodes = data =>
     data.map(item => {
       if (item.children) {
         return (
-          <TreeNode title={item.title} key={item.key} dataRef={item}>
+          <TreeNode icon={({ expanded }) => <Icon type={expanded ? 'folder-open' : 'folder'} />} title={item.text} key={item.id} dataRef={item}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item.key} {...item} dataRef={item} />;
+      return <TreeNode icon={({ expanded }) => <Icon type={expanded ? 'folder-open' : 'folder'} />} title={item.text} key={item.id} dataRef={item} />;
     });
 
   render() {
     return (
-      <Tree loadData={this.onLoadData}>
-        {this.renderTreeNodes(this.state.treeData)}
-      </Tree>
+      <div>
+        <CreateOrg
+          onRef={this.onCreateRef}
+        />
+        <Layout>
+          <Header style={{ position: "fixed", width: "100%", height: "auto", zIndex: 1, padding: 0 }}>
+            <div className="tree-container">
+              <h4 className="tree-title">组织架构</h4>
+              <div className="header-button-area">
+                <Button ghost onClick={this.refresh}>刷新</Button>
+                <Button ghost onClick={this.create}>新增</Button>
+              </div>
+            </div>
+          </Header>
+
+          <Content className="tree-content">
+            <Tree
+              showIcon
+              showLine
+              loadData={this.onLoadData}>
+              {this.renderTreeNodes(this.state.treeData)}
+            </Tree>
+          </Content>
+        </Layout>
+
+
+      </div>
     );
   }
 }
